@@ -21,7 +21,7 @@ class StateDonationController extends Controller
         $stateDonation = State_donation::create($request->all());
         return response()->json([
            $stateDonation
-        ]);
+        ],201);
     }
 
     public function show(State_donation $state_donation)
