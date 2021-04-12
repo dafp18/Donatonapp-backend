@@ -20,4 +20,5 @@ Route::apiResource('v1/state_donations', 'Api\V1\StateDonationController');
 Route::apiResource('v1/state_products', 'Api\V1\StateProductController');
 Route::apiResource('v1/products', 'Api\V1\ProductController');
 
-//Route::post('api-token-auth', );
+Route::post('Login', 'Api\LoginController@login');
+Route::post('registerNewUser', 'Api\RegisterController@registerNewUser');
