@@ -22,3 +22,4 @@ Route::apiResource('v1/products', 'Api\V1\ProductController');
 
 Route::post('Login', 'Api\LoginController@login');
 Route::post('registerNewUser', 'Api\RegisterController@registerNewUser');
+Route::get('register/verify/{email}', 'Api\RegisterController@verifyEmail');

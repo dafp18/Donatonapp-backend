@@ -3,15 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\EmailConfirmation;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
     public function registerNewUser(Request $request) {
         $request->validate([
-            "name" => "required|unique:type_documents",
+            "name" => "required|string",
             "lastname" => "required|string",
             "user" => 'required|email|unique:users',
             "address" => 'required|string',
@@ -36,8 +40,28 @@ class RegisterController extends Controller
             "id_document" => $request->id_document,
             "is_active" => $request->is_active
         ]);
+
+        $dataEmail = [
+            'email' => $request->email,
+            'name' => $request->name.' '.$request->lastname
+        ];
+
+        $sendTo = $request->email;
+        /*Mail::to($sendTo)->send(new EmailConfirmation());*/
+        Mail::send('emails.email_confirmation', $dataEmail, function($message) use ($sendTo, $dataEmail) {
+                $message->to($sendTo)->subject('Confirmación de correo');
+        });
         return response()->json([
-            $user
+                $user
         ],201);
+
+    }
+
+    public function verifyEmail ($email){
+        DB::table('users')
+            ->where('email', $email)
+            ->update(['email_verified_at' => Carbon::now()]);
+
+        return 'Email confirmado';
     }
 }
