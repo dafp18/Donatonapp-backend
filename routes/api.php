@@ -19,7 +19,12 @@ Route::apiResource('v1/localities', 'Api\V1\LocalityController');
 Route::apiResource('v1/state_donations', 'Api\V1\StateDonationController');
 Route::apiResource('v1/state_products', 'Api\V1\StateProductController');
 Route::apiResource('v1/products', 'Api\V1\ProductController');
+Route::post('v1/getProductsByUser', 'Api\V1\ProductController@getProductsByUser');
 
-Route::post('Login', 'Api\LoginController@login');
+Route::post('login', 'Api\LoginController@login');
 Route::post('registerNewUser', 'Api\RegisterController@registerNewUser');
 Route::get('register/verify/{email}', 'Api\RegisterController@verifyEmail');
+Route::post('validateIfExistEmail', 'Api\RegisterController@validateIfExistEmail');
+Route::post('verifyCodeForgetPassword', 'Api\RegisterController@verifyCodeForgetPassword');
+Route::post('changePassword', 'Api\RegisterController@changePassword');
+

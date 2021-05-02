@@ -5,12 +5,46 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        return Product::all();
+        return DB::table('products')
+            ->join('users', 'users.id', '=', 'products.id_user')
+            ->join('state_products', 'state_products.id', '=', 'products.id_state_product')
+            ->join('state_donations', 'state_donations.id', '=', 'products.id_state_donation')
+            ->join('categories', 'categories.id', '=', 'products.id_category')
+            ->join('localities', 'localities.id', '=', 'products.id_locality')
+            ->select('products.id','products.name as title','products.url_image','products.description','products.quantity','products.observation', 'products.created_at',
+                'categories.name as category',
+                'state_donations.name as state_donation',
+                'state_products.name as state_product',
+                'localities.name as locality'
+            )
+            ->where('state_donations.name', '=', 'Pendiente')
+            ->orderBy('products.created_at', 'desc')
+            ->get();
+    }
+
+    public function getProductsByUser(Request $request){
+        return DB::table('products')
+            ->join('users', 'users.id', '=', 'products.id_user')
+            ->join('state_products', 'state_products.id', '=', 'products.id_state_product')
+            ->join('state_donations', 'state_donations.id', '=', 'products.id_state_donation')
+            ->join('categories', 'categories.id', '=', 'products.id_category')
+            ->join('localities', 'localities.id', '=', 'products.id_locality')
+            ->select('products.id','products.name as title','products.url_image','products.description','products.quantity','products.observation', 'products.created_at',
+                'categories.name as category',
+                'state_donations.name as state_donation',
+                'state_products.name as state_product',
+                'localities.name as locality'
+            )
+            ->where([
+                ['users.email', '=', $request->user],
+                ['state_donations.name', '=', $request->estado],
+            ])->get();
     }
 
     public function store(Request $request)
@@ -53,4 +87,5 @@ class ProductController extends Controller
             'message' => 'Registro eliminado correctamente'
         ]);
     }
+
 }
