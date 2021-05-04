@@ -27,4 +27,5 @@ Route::get('register/verify/{email}', 'Api\RegisterController@verifyEmail');
 Route::post('validateIfExistEmail', 'Api\RegisterController@validateIfExistEmail');
 Route::post('verifyCodeForgetPassword', 'Api\RegisterController@verifyCodeForgetPassword');
 Route::post('changePassword', 'Api\RegisterController@changePassword');
+Route::post('v1/getDataUserLogged', 'Api\V1\UserController@getDataUserLogged');
 
