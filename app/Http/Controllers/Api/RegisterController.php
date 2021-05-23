@@ -30,7 +30,7 @@ class RegisterController extends Controller
         ]);
         $user = User::create([
             "name" => $request->name,
-            "lastname" => $request->lastname,
+            "lastname" => ($request->lastname == '.') ? '': $request->lastname,
             "user" => $request->user,
             "address" => $request->address,
             "phone" => $request->phone,
@@ -39,7 +39,8 @@ class RegisterController extends Controller
             "password" =>  Hash::make($request->password),
             "id_rol" => $request->id_rol,
             "id_document" => $request->id_document,
-            "is_active" => $request->is_active
+            "is_active" => $request->is_active,
+            "image_url" => "http://192.168.1.18:8000/imgsUsers/profileDefault.png"
         ]);
 
         $dataEmail = [
@@ -48,12 +49,12 @@ class RegisterController extends Controller
         ];
 
         $sendTo = $request->email;
-        /*Mail::to($sendTo)->send(new EmailConfirmation());*/
+
         Mail::send('emails.email_confirmation', $dataEmail, function($message) use ($sendTo, $dataEmail) {
                 $message->to($sendTo)->subject('Confirmación de correo');
         });
         return response()->json([
-                $user
+                'Message' => 'Registrado'
         ],201);
 
     }
@@ -62,7 +63,8 @@ class RegisterController extends Controller
         DB::table('users')
             ->where('email', $email)
             ->whereNull('email_verified_at')
-            ->update(['email_verified_at' => Carbon::now()]);
+            ->update(['email_verified_at' => Carbon::now(),
+                      'is_active' => true]);
 
         return 'Email confirmado';
     }

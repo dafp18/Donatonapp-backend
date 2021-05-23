@@ -11,11 +11,53 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     public function getDataUserLogged (Request $request){
-        $user = DB::table('users')
-                    ->join('roles', 'roles.id', '=', 'users.id_rol')
-                    ->select('users.id','users.name', 'lastname', 'email', 'image_url', 'address', 'phone', 'num_document', 'roles.name as rol', 'users.created_at' )
-                    ->where('email', '=', $request->email)
+        $query = "select  u.id,
+                        u.name,
+                        lastname,
+                        email,
+                        CONCAT('http://192.168.1.18:8000/imgsUsers/',image_url) image_url,
+                        address,
+                        phone,
+                        num_document,
+                        r.name as rol,
+                        u.created_at
+                from users u
+                inner join roles r on u.id_rol = r.id
+                where u.email = '$request->email'";
+        return DB::select($query);
+    }
+
+    public function getDataUserDonation ($id){
+        return DB::table('users')
+                    ->select('name', 'lastname', 'email', 'image_url', 'phone')
+                    ->where('id', $id)
                     ->get();
-        return $user;
+    }
+
+    public function updateDataUser (Request $request){
+        $fileName = strtotime("now");
+        $dirImages = public_path("/imgsUsers");
+        $name = '';
+        if(isset($request->url_image)){
+            if($request->hasFile('url_image')){
+                $file = $request->file('url_image');
+                $name = 'profileImage_'.$fileName.'.'.$file->getClientOriginalExtension();
+                $file->move($dirImages,$name);
+                $query = " update users set image_url = '$name' where id = '$request->id'";
+            }
+        }else{
+            $query = " update users set address = '$request->address', phone = '$request->phone' where id = '$request->id'";
+        }
+
+        $result = DB::update($query);
+
+        if($result){
+            return response()->json([
+                'Message' => 'Actualizado'
+            ],201);
+        }
+        return response()->json([
+            'Message' => 'Error'
+        ]);
     }
 }

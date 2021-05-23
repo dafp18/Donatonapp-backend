@@ -19,23 +19,28 @@ class LoginController extends Controller
         $user = User::where('email', $request->email)->first();
         if(!$user){
             return response()->json([
-                'message' => 'Email no registrado'
+                'Message' => 'emailFail'
             ],401);
         }
 
         if($user && !Hash::check($request->password, $user->password)){
             return response()->json([
-                'message' => 'Contraseña inválida'
+                'Message' => 'passwordFail'
             ],401);
         }
 
         if($user && Hash::check($request->password, $user->password) && $user->is_active == false){
             return response()->json([
-                'message' => 'Su email no ha sido verificado'
+                'Message' => 'disabled'
             ],401);
         }
 
         return response()->json([
+           'userId' => $user->id,
+           'rol' => $user->id_rol,
+           'ultimoIngreso' => $user->updated_at,
+           'name' => $user->name,
+           'lastname' => $user->lastname,
            'user' => $user->email,
            'token' => $user->createToken($request->device_name)->plainTextToken
         ],200);
