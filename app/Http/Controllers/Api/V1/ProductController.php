@@ -106,7 +106,7 @@ class ProductController extends Controller
         $result =   DB::table('products')
                         ->where('id', $request->idProduct)
                         ->update([  'id_user_take_donate' => $request->idUser,
-                                    'id_state_donation' => 3
+                                    'id_state_donation' => 2
                                 ]);
         if($result){
             $subject = "¡Donaste! Coordina la entrega de tu donación ".$dataProduct[0]['name'];
