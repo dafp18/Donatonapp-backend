@@ -40,7 +40,7 @@ class RegisterController extends Controller
             "id_rol" => $request->id_rol,
             "id_document" => $request->id_document,
             "is_active" => $request->is_active,
-            "image_url" => "http://192.168.1.18:8000/imgsUsers/profileDefault.png"
+            "image_url" => "profileDefault.png"
         ]);
 
         $dataEmail = [

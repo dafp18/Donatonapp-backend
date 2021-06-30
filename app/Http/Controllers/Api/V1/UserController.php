@@ -28,10 +28,14 @@ class UserController extends Controller
     }
 
     public function getDataUserDonation ($id){
-        return DB::table('users')
-                    ->select('name', 'lastname', 'email', 'image_url', 'phone')
-                    ->where('id', $id)
-                    ->get();
+        $query = "select name,
+                         lastname,
+                         email,
+                         CONCAT('http://192.168.1.18:8000/imgsUsers/',image_url) image_url,
+                         phone
+                    from users
+                    where id = '$id'";
+        return DB::select($query);
     }
 
     public function updateDataUser (Request $request){

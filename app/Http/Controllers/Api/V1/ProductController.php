@@ -126,7 +126,7 @@ class ProductController extends Controller
     public function changeStatusFinishProduct ($idProduct) {
         $result = DB::table('products')
                         ->where('id',$idProduct)
-                        ->update(['id_state_donation' => 2]);
+                        ->update(['id_state_donation' => 3]);
         if($result){
             return response()->json([
                 'Message' => 'Actualizado'
