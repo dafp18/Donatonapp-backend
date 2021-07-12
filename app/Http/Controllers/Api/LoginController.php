@@ -45,4 +45,10 @@ class LoginController extends Controller
            'token' => $user->createToken($request->device_name)->plainTextToken
         ],200);
     }
+
+    public function logout($id){
+        $user = User::where('id', $id)->first();
+        $user->tokens()->delete();
+        return response(null,204);
+    }
 }
