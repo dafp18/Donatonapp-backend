@@ -26,8 +26,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('v1/updateDataUser', 'Api\V1\UserController@updateDataUser');
 });
 
-Route::apiResource('v1/roles', 'Api\V1\RoleController');
-
 Route::post('login', 'Api\LoginController@login');
 Route::post('registerNewUser', 'Api\RegisterController@registerNewUser');
 Route::get('register/verify/{email}', 'Api\RegisterController@verifyEmail');
@@ -36,9 +34,6 @@ Route::post('verifyCodeForgetPassword', 'Api\RegisterController@verifyCodeForget
 Route::post('changePassword', 'Api\RegisterController@changePassword');
 Route::get('logout/{userId}', 'Api\LoginController@logout');
 
-Route::get('/home', function (){
-    return 'DonatonApp';
-});
 
 
 
