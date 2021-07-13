@@ -36,6 +36,10 @@ Route::post('verifyCodeForgetPassword', 'Api\RegisterController@verifyCodeForget
 Route::post('changePassword', 'Api\RegisterController@changePassword');
 Route::get('logout/{userId}', 'Api\LoginController@logout');
 
+Route::get('/', function (){
+    return 'DonatonApp';
+});
+
 
 
 
