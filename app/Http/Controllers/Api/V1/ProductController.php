@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\Mail;
 
 class ProductController extends Controller
 {
+    public $base_url = "https://donatonappco.herokuapp.com/public";
     public function index(){
         $query = "select   p.id,
                            p.name title,
-                           CONCAT('http://192.168.1.18:8000/imgsDonations/',split_part(p.url_image, '|', 1)) url_image,
+                           CONCAT('$this->base_url/imgsDonations/',split_part(p.url_image, '|', 1)) url_image,
                            p.description,
                            p.quantity,
                            p.observation,
@@ -38,7 +39,7 @@ class ProductController extends Controller
     public function getProductsByUser(Request $request){
         $query = "select  p.id,
                            p.name title,
-                           CONCAT('http://192.168.1.18:8000/imgsDonations/',split_part(p.url_image, '|', 1)) url_image,
+                           CONCAT('$this->base_url/imgsDonations/',split_part(p.url_image, '|', 1)) url_image,
                            p.description,
                            p.quantity,
                            p.observation,
@@ -62,7 +63,7 @@ class ProductController extends Controller
     public function getProductsAceptedAndProcessed(Request $request){
         $query = "select   p.id,
                            p.name title,
-                           CONCAT('http://192.168.1.18:8000/imgsDonations/',split_part(p.url_image, '|', 1)) url_image,
+                           CONCAT('$this->base_url/imgsDonations/',split_part(p.url_image, '|', 1)) url_image,
                            p.description,
                            p.quantity,
                            p.observation,

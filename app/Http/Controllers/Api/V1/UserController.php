@@ -10,12 +10,13 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public $base_url = "https://donatonappco.herokuapp.com/public";
     public function getDataUserLogged (Request $request){
         $query = "select  u.id,
                         u.name,
                         lastname,
                         email,
-                        CONCAT('http://192.168.1.18:8000/imgsUsers/',image_url) image_url,
+                        CONCAT('$this->base_url/imgsUsers/',image_url) image_url,
                         address,
                         phone,
                         num_document,
@@ -31,7 +32,7 @@ class UserController extends Controller
         $query = "select name,
                          lastname,
                          email,
-                         CONCAT('http://192.168.1.18:8000/imgsUsers/',image_url) image_url,
+                         CONCAT('$this->base_url/imgsUsers/',image_url) image_url,
                          phone
                     from users
                     where id = '$id'";
