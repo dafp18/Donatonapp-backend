@@ -164,6 +164,7 @@ class ProductController extends Controller
         $totalImages = [];
         $stringImages = '';
         $request->cantImages = intval($request->cantImages);
+        return gettype($request->cantImages);
         if($request->cantImages > 1){
             for($i = 1; $i <= $request->cantImages; $i++ ){
                 //  Asi Funciona desde el postman
