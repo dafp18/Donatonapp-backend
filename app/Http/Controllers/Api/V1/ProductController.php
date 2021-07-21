@@ -181,7 +181,6 @@ class ProductController extends Controller
 
         if($request->cantImages == 1){
             if($request->hasFile('url_image_1')){
-                return gettype($request->cantImages);
                 $file = $request->file('url_image_1');
                 $name = 'donationImage_'.$fileName.'_1'.$file->getClientOriginalExtension();
                 $file->move($dirImages,$name);
