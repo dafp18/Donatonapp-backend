@@ -174,7 +174,8 @@ class ProductController extends Controller
             }
         }
 
-        $request->merge(['url_image' => $stringImages]);
+        //$request->merge(['url_image' => $stringImages]);
+        $request->request->add(['url_image' => $stringImages]);
         //if($request->has('url_image')){
         //    return $request->all();
         //}
