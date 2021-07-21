@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use function GuzzleHttp\Promise\all;
 
 class ProductController extends Controller
 {
@@ -172,7 +173,12 @@ class ProductController extends Controller
                 $stringImages .= $name.'|';
             }
         }
+
         $request->merge(['url_image' => $stringImages]);
+        //if($request->has('url_image')){
+        //    return $request->all();
+        //}
+        //return 'invalid';
         $request->validate([
            'name' => 'required|string',
            'url_image' => 'required',
