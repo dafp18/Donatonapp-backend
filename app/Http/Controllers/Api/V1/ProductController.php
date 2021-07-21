@@ -166,7 +166,6 @@ class ProductController extends Controller
         $request->cantImages = intval($request->cantImages);
 
         if($request->cantImages > 1){
-            return gettype($request->cantImages);
             for($i = 1; $i <= $request->cantImages; $i++ ){
                 //  Asi Funciona desde el postman
                 if($request->hasFile('url_image_'.$i)){
