@@ -180,13 +180,14 @@ class ProductController extends Controller
         }
 
         if($request->cantImages == 1){
-            return gettype($request->cantImages);
             if($request->hasFile('url_image_1')){
+                return gettype($request->cantImages);
                 $file = $request->file('url_image_1');
                 $name = 'donationImage_'.$fileName.'_1'.$file->getClientOriginalExtension();
                 $file->move($dirImages,$name);
                 $stringImages = $name.'|';
             }
+            return 'hello';
         }
 
         //$request->merge(['url_image' => $stringImages]);
