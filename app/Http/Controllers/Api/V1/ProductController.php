@@ -163,56 +163,65 @@ class ProductController extends Controller
         $dirImages = public_path("/imgsDonations");
         $totalImages = [];
         $stringImages = '';
-        for($i = 1; $i <= $request->cantImages; $i++ ){
-            //  Asi Funciona desde el postman
-            if($request->hasFile('url_image_'.$i)){
-                $file = $request->file('url_image_'.$i);
-                $name = 'donationImage_'.$fileName.'_'.$i.'.'.$file->getClientOriginalExtension();
+        if($request->cantImages > 1){
+            for($i = 1; $i <= $request->cantImages; $i++ ){
+                //  Asi Funciona desde el postman
+                if($request->hasFile('url_image_'.$i)){
+                    $file = $request->file('url_image_'.$i);
+                    $name = 'donationImage_'.$fileName.'_'.$i.'.'.$file->getClientOriginalExtension();
+                    $file->move($dirImages,$name);
+                    array_push($totalImages,$name);
+                    $stringImages .= $name.'|';
+                }
+            }
+        }
+
+        if($request->cantImages == 1){
+            if($request->hasFile('url_image_1')){
+                $file = $request->file('url_image_1');
+                $name = 'donationImage_'.$fileName.'_1'.$file->getClientOriginalExtension();
                 $file->move($dirImages,$name);
-                array_push($totalImages,$name);
-                $stringImages .= $name.'|';
+                $stringImages = $name.'|';
             }
         }
 
         //$request->merge(['url_image' => $stringImages]);
-        $request->request->add(['url_image' => $stringImages]);
-        if($request->has('url_image')){
-            return $request->all();
-        }
-        return 'invalid';
-        $request->validate([
-           'name' => 'required|string',
-           'url_image' => 'required',
-           'description' => 'required|string',
-           'quantity' => 'required|integer',
-           'observation' => 'required',
-           'id_category' => 'required|integer',
-           'id_state_donation' => 'required|integer', //activa-desactivada-entregada-enproceso
-           'id_state_product' => 'required|integer',
-           'id_locality' => 'required|integer',
-           'id_user' => 'required|integer',
-        ]);
-        $product = Product::create([
-            'name' => $request->name,
-            'url_image' => $request->url_image,
-            'description' => $request->description,
-            'quantity' => $request->quantity,
-            'observation' => $request->observation,
-            'id_category' => $request->id_category,
-            'id_state_donation' => $request->id_state_donation,
-            'id_state_product' => $request->id_state_product,
-            'id_locality' => $request->id_locality,
-            'id_user' => $request->id_user,
-        ]);
-        if($product){
-            return response()->json([
-               'Message' => 'creado'
-            ],201);
-        }
-        return response()->json([
-            'Message' => 'No creado'
-        ]);
+        $addUrlImage =$request->request->add(['url_image' => $stringImages]);
 
+        if($addUrlImage){
+            $request->validate([
+                'name' => 'required|string',
+                'url_image' => 'required',
+                'description' => 'required|string',
+                'quantity' => 'required|integer',
+                'observation' => 'required',
+                'id_category' => 'required|integer',
+                'id_state_donation' => 'required|integer', //activa-desactivada-entregada-enproceso
+                'id_state_product' => 'required|integer',
+                'id_locality' => 'required|integer',
+                'id_user' => 'required|integer',
+            ]);
+            $product = Product::create([
+                'name' => $request->name,
+                'url_image' => $request->url_image,
+                'description' => $request->description,
+                'quantity' => $request->quantity,
+                'observation' => $request->observation,
+                'id_category' => $request->id_category,
+                'id_state_donation' => $request->id_state_donation,
+                'id_state_product' => $request->id_state_product,
+                'id_locality' => $request->id_locality,
+                'id_user' => $request->id_user,
+            ]);
+            if($product){
+                return response()->json([
+                    'Message' => 'creado'
+                ],201);
+            }
+            return response()->json([
+                'Message' => 'No creado'
+            ]);
+        }
     }
 
     public function show(Product $product)
@@ -258,6 +267,7 @@ class ProductController extends Controller
                     $stringImages .= $name.'|';
                 }
             }
+            return $stringImages.'Actualizar';
             if(isset($request->id_category)){
                 $query = " update products set  name = '$request->name',
                                                 quantity = '$request->quantity',
