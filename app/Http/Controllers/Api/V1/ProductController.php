@@ -190,7 +190,7 @@ class ProductController extends Controller
 
         //$request->merge(['url_image' => $stringImages]);
         $addUrlImage =$request->request->add(['url_image' => $stringImages]);
-        return $request->all();
+
         if($addUrlImage){
             $request->validate([
                 'name' => 'required|string',
