@@ -163,7 +163,7 @@ class ProductController extends Controller
         $dirImages = public_path("/imgsDonations");
         $totalImages = [];
         $stringImages = '';
-        if($request->cantImages > 1){
+        if(intval($request->cantImages) > 1){
             for($i = 1; $i <= $request->cantImages; $i++ ){
                 //  Asi Funciona desde el postman
                 if($request->hasFile('url_image_'.$i)){
@@ -176,7 +176,7 @@ class ProductController extends Controller
             }
         }
 
-        if($request->cantImages == 1){
+        if(intval($request->cantImages) == 1){
             if($request->hasFile('url_image_1')){
                 $file = $request->file('url_image_1');
                 $name = 'donationImage_'.$fileName.'_1'.$file->getClientOriginalExtension();
