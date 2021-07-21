@@ -188,43 +188,41 @@ class ProductController extends Controller
             return 'hello';
         }
 
-        //$request->merge(['url_image' => $stringImages]);
-        $addUrlImage =$request->request->add(['url_image' => $stringImages]);
+        $request->merge(['url_image' => $stringImages]);
+        //$addUrlImage =$request->request->add(['url_image' => $stringImages]);
 
-        if($addUrlImage){
-            $request->validate([
-                'name' => 'required|string',
-                'url_image' => 'required',
-                'description' => 'required|string',
-                'quantity' => 'required|integer',
-                'observation' => 'required',
-                'id_category' => 'required|integer',
-                'id_state_donation' => 'required|integer', //activa-desactivada-entregada-enproceso
-                'id_state_product' => 'required|integer',
-                'id_locality' => 'required|integer',
-                'id_user' => 'required|integer',
-            ]);
-            $product = Product::create([
-                'name' => $request->name,
-                'url_image' => $request->url_image,
-                'description' => $request->description,
-                'quantity' => $request->quantity,
-                'observation' => $request->observation,
-                'id_category' => $request->id_category,
-                'id_state_donation' => $request->id_state_donation,
-                'id_state_product' => $request->id_state_product,
-                'id_locality' => $request->id_locality,
-                'id_user' => $request->id_user,
-            ]);
-            if($product){
-                return response()->json([
-                    'Message' => 'creado'
-                ],201);
-            }
+        $request->validate([
+            'name' => 'required|string',
+            'url_image' => 'required',
+            'description' => 'required|string',
+            'quantity' => 'required|integer',
+            'observation' => 'required',
+            'id_category' => 'required|integer',
+            'id_state_donation' => 'required|integer', //activa-desactivada-entregada-enproceso
+            'id_state_product' => 'required|integer',
+            'id_locality' => 'required|integer',
+            'id_user' => 'required|integer',
+        ]);
+        $product = Product::create([
+            'name' => $request->name,
+            'url_image' => $request->url_image,
+            'description' => $request->description,
+            'quantity' => $request->quantity,
+            'observation' => $request->observation,
+            'id_category' => $request->id_category,
+            'id_state_donation' => $request->id_state_donation,
+            'id_state_product' => $request->id_state_product,
+            'id_locality' => $request->id_locality,
+            'id_user' => $request->id_user,
+        ]);
+        if($product){
             return response()->json([
-                'Message' => 'No creado'
-            ]);
+                'Message' => 'creado'
+            ],201);
         }
+        return response()->json([
+            'Message' => 'No creado'
+        ]);
     }
 
     public function show(Product $product)
