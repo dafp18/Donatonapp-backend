@@ -270,7 +270,6 @@ class ProductController extends Controller
                     $stringImages .=  ($i === 2 && $fixOneImage) ? '' : $name.'|' ;
                 }
             }
-            return $stringImages.'Actualizar';
             if(isset($request->id_category)){
                 $query = " update products set  name = '$request->name',
                                                 quantity = '$request->quantity',
