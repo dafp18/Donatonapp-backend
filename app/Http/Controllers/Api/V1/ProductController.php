@@ -163,7 +163,11 @@ class ProductController extends Controller
         $dirImages = public_path("/imgsDonations");
         $totalImages = [];
         $stringImages = '';
-        $request->cantImages = (intval($request->cantImages) === 1 ) ? 2 : intval($request->cantImages) ;
+        $fixOneImage = false;
+        if(intval($request->cantImages) === 1){
+            $request->cantImages = 2;
+            $fixOneImage = true;
+        }
 
         if($request->cantImages > 1){
             for($i = 1; $i <= $request->cantImages; $i++ ){
@@ -173,7 +177,7 @@ class ProductController extends Controller
                     $name = 'donationImage_'.$fileName.'_'.$i.'.'.$file->getClientOriginalExtension();
                     $file->move($dirImages,$name);
                     array_push($totalImages,$name);
-                    $stringImages .= $name.'|';
+                    $stringImages .= (!$fixOneImage) ? $name.'|' : '';
                 }
             }
         }
