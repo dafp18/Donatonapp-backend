@@ -251,7 +251,15 @@ class ProductController extends Controller
         $dirImages = public_path("/imgsDonations");
         $totalImages = [];
         $stringImages = '';
+        $fixOneImage = false;
+
         if(isset($request->cantImages)){
+
+            if(intval($request->cantImages) === 1){
+                $request->cantImages = 2;
+                $fixOneImage = true;
+            }
+
             for($i = 1; $i <= $request->cantImages; $i++ ){
                 //  Asi Funciona desde el postman
                 if($request->hasFile('url_image_'.$i)){
@@ -259,7 +267,7 @@ class ProductController extends Controller
                     $name = 'donationImage_'.$fileName.'_'.$i.'.'.$file->getClientOriginalExtension();
                     $file->move($dirImages,$name);
                     array_push($totalImages,$name);
-                    $stringImages .= $name.'|';
+                    $stringImages .=  ($i === 2 && $fixOneImage) ? '' : $name.'|' ;
                 }
             }
             return $stringImages.'Actualizar';
