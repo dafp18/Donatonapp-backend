@@ -179,6 +179,7 @@ class ProductController extends Controller
         }
 
         if($request->cantImages == 1){
+            $request->url_image_1 = [$request->url_image_1];
             if($request->hasFile('url_image_1')){
                 $file = $request->file('url_image_1');
                 $name = 'donationImage_'.$fileName.'_1'.$file->getClientOriginalExtension();
