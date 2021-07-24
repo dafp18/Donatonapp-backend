@@ -177,7 +177,7 @@ class ProductController extends Controller
                     $name = 'donationImage_'.$fileName.'_'.$i.'.'.$file->getClientOriginalExtension();
                     $file->move($dirImages,$name);
                     array_push($totalImages,$name);
-                    $stringImages .= (!$fixOneImage) ? $name.'|' : '';
+                    $stringImages .=  ($i === 2 && !$fixOneImage) ? '' : $name.'|' ;
                 }
             }
         }
